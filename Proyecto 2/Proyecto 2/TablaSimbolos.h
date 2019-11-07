@@ -15,6 +15,6 @@ public:
 	std::string imprimirCodigo();
 
 private:
-	//std::unordered_map<std::string, > hashtable;
+	std::unordered_map<std::string, std::string> hashtable;
 	std::vector<std::string> funcion;
 };
