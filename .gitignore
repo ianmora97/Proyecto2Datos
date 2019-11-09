@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+Proyecto 2/.vs/Proyecto 2/v16/.suo
+*.db
+*.opendb
+*.ipch
+*.ilk
+*.pdb
+*.idb
+*.enc
+*.lastbuildstate
+*.tlog
+*.log

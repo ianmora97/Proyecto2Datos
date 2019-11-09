@@ -1,4 +1,4 @@
-int x;
+int x = 454545;
 
 void funcion(float v, string n){
 	if(v > 0.0){
