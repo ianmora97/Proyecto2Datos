@@ -18,6 +18,7 @@ public:
 	void initVectores();
 
 	void recuperarDesdeArchivo(std::string ruta);
+	std::string toString();
 	std::string imprimirCodigo();
 
 	void llenarStatments(std::string);
@@ -31,10 +32,6 @@ public:
 	bool comparar(char l);
 
 	bool compararFunc(std::string l);
-
-	void crearTablaSimbolos();
-
-	
 
 private:
 	std::unordered_map<std::string, std::string> hashtable;

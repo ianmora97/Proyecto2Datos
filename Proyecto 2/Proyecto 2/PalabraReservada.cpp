@@ -49,11 +49,40 @@ std::string PalabraReservada::getValor(){
 
 std::string PalabraReservada::toString(){
 	std::stringstream s;
-	s << "Tipo: " << tipo << "\n";
-	s << "Id: " << ID << "\n";
-	s << "Nombre: " << nombre << "\n";
-	s << "Padre: " << padre << "\n";
-	s << "Valor: " << valor << "\n";
+
+	if(tipo.size() == 2)
+		s << " | " << tipo << "     | ";
+	else if(tipo.size() == 3)
+		s << " | " << tipo << "    | ";
+	else if (tipo.size() == 4)
+		s << " | " << tipo << "   | ";
+	else if (tipo.size() == 5)
+		s << " | " << tipo << "  | ";
+	else if (tipo.size() == 6)
+		s << " | " << tipo << " | ";
+
+	if(ID.size() == 9)
+		s << ID << " | ";
+	else if(ID.size() == 8)
+		s << ID << "  | ";
+	else if (ID.size() == 7)
+		s << ID << "   | ";
+
+	s << nombre << " | ";
+
+	if (padre != "") {
+		if (padre.size() == 4)
+			s << padre << "    | ";
+		else
+			s << padre << " | ";
+	} else {
+		s << "NULL" << "  | ";
+	}
+
+	if(valor != "")
+		s << valor << " |";
+	else
+		s << "Vacio" << " |";
 
 
 	return s.str();

@@ -62,14 +62,14 @@ void TablaSimbolos::recuperarDesdeArchivo(std::string ruta){
 
 }
 
-std::string TablaSimbolos::imprimirCodigo() {
+std::string TablaSimbolos::toString() {
 	std::stack<PalabraReservada> pila;
-	
+
 	std::stringstream s;
-	
+
 	int tam;
-	
-	s << "\nFunciones: \n";
+
+	s << "Funciones: \n\n";
 
 	tam = funciones.size();
 	for (int i = 0; i < tam; i++) {
@@ -85,7 +85,7 @@ std::string TablaSimbolos::imprimirCodigo() {
 		pila.pop();
 	}
 
-	s << "\nVariables: \n";
+	s << "\nVariables: \n\n";
 
 	tam = variables.size();
 	for (int i = 0; i < tam; i++) {
@@ -100,7 +100,12 @@ std::string TablaSimbolos::imprimirCodigo() {
 		pila.pop();
 	}
 
-	s << "\n";
+	return s.str();
+}
+
+std::string TablaSimbolos::imprimirCodigo() {
+	std::stringstream s;
+
 	int i = 0;
 	while (i < codigo.size()) {
 		s << codigo[i] << "\n";
@@ -313,18 +318,3 @@ bool TablaSimbolos::compararFunc(std::string l) {
 	return false;
 }
 
-void TablaSimbolos::crearTablaSimbolos(){
-	for (int i = 0; i < codigo.size() - 1; i++) {
-
-		if (codigo[i] != "") {
-
-			std::string lineaCodigo = codigo[i];
-			std::string identificador;
-			std::string nombre;
-
-
-
-		}
-
-	}
-}
