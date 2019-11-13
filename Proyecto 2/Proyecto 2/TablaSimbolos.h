@@ -1,17 +1,17 @@
 #pragma once
 
-#include <iomanip>
-#include <unordered_map>
-#include <fstream>
-#include <stack> 
-#include <iostream>
-#include <algorithm>
-#include <cctype>
+#include "PalabraReservada.h"
 
 //el numero maximo de linea de codigo por archivo
-#define LINEAS_MAX 15 
+#define LINEAS_MAX 25 
 
-#include "PalabraReservada.h"
+struct ExceptionE {
+	ExceptionE(std::string s, int v)
+		:s(s), v(v){}
+	std::string s;
+	int v;
+};
+
 
 class TablaSimbolos{
 public:
@@ -22,13 +22,18 @@ public:
 
 	int hashf(std::string id);
 
-	std::string buscar(std::string id);
+	PalabraReservada& buscarVar(std::string id);
+
+	PalabraReservada buscarFunc(std::string id);
+
+	bool check_key(std::string e);
 
 	void recuperarDesdeArchivo(std::string ruta);
 	std::string toString();
 	std::string imprimirCodigo();
 
-	bool declaracionInvalida(PalabraReservada);
+	std::string mostrarErrores();
+
 	
 	void insertarFuncionMap(PalabraReservada);
 	void insertarVariableMap(PalabraReservada);
@@ -41,11 +46,18 @@ public:
 	bool compararFunc(std::string l);
 
 private:
-	std::unordered_map<std::string, PalabraReservada> funcionesMap;
-	std::unordered_map<std::string, PalabraReservada> variablesMap;
+	std::unordered_map<int, PalabraReservada> funcionesMap;
+	std::unordered_map<int, PalabraReservada> variablesMap;
 	std::vector<std::string> codigo;
+
 	std::stack<PalabraReservada> funciones;
 	std::stack<PalabraReservada> variables;
+
+	std::stack<PalabraReservada> funcionesImprimir;
+
 	std::vector<char> operadores;
 	std::vector<std::string> func;
+
+	std::vector<std::string> cerr;
+	int lineaCodigoActual = 1;
 };

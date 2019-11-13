@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClInclude Include="PalabraReservada.h" />
     <ClInclude Include="TablaSimbolos.h" />
+    <ClInclude Include="tools.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

@@ -1,9 +1,12 @@
-x = 40;
+int x = 40;
 
 void funcion(float v, string n){
+	int x = 32;
 	if(v > 0.0){
+		a = "aguacate";
 		n = "Mayor";
 		x = x + 5;
 	}
+	return v;
 }
 return n;

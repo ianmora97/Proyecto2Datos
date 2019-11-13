@@ -21,6 +21,9 @@
     <ClInclude Include="PalabraReservada.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TablaSimbolos.cpp">

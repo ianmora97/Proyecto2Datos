@@ -1,8 +1,9 @@
 int x = 454545;
 
-void funcion(float v, string n){
+float funcion(float v, string n){
 	if(v > 0.0){
 		n = "Mayor";
 		x = x + 5;
 	}
+	return v;
 }

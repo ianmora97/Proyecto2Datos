@@ -1,8 +1,6 @@
 #pragma once
 
-#include <string>
-#include <sstream>
-#include <iomanip>
+#include "tools.h"
 
 class PalabraReservada{
 public:
@@ -28,6 +26,8 @@ private:
 	std::string nombre; //nombre de variabla o funcion
 	std::string ID;		//statement variable o funcion
 	std::string padre;	//parentesis al que pertenece
-	std::string valor;	//valor del tipo
+	std::string valor;
+	bool check_key(std::string e);
+	//valor del tipo
 };
 
