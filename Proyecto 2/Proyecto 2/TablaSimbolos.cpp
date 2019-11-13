@@ -106,6 +106,7 @@ std::string TablaSimbolos::toString() {
 	for (int i = 0; i < tam; i++) {
 		pila.push(funciones.top());
 		s << funciones.top().toString();
+		s << "\t" << hashf(funciones.top().getNombre());
 		funciones.pop();
 		s << "\n";
 	}
@@ -122,6 +123,7 @@ std::string TablaSimbolos::toString() {
 	for (int i = 0; i < tam; i++) {
 		pila.push(variables.top());
 		s << variables.top().toString();
+		s << "\t" << hashf(funciones.top().getNombre());
 		variables.pop();
 		s << "\n";
 	}
@@ -219,12 +221,12 @@ void TablaSimbolos::leerString(std::string linea) {
 				variables.push(pr);
 				insertarVariableMap(pr);
 			}
-			else if (linea[i] == '=' && staments.size() != 2) { //variables
-				std::string e = pila.top();
-
+			//else if (linea[i] == '=' && staments.size() != 2) { //asignacion de una variable
+				//std::string e = staments.front();
+				//buscar un elemento y asignarlo
 				
-				throw - 1;
-			}
+				//throw - 1;
+			//}
 			else if (statement == "void") {
 				PalabraReservada pr;
 				pr.setID("funcion");

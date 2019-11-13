@@ -12,20 +12,24 @@ int main() {
 	std::cout << tabla.imprimirCodigo();
 	std::cout << "\n";
 	std::cout << "TABLA DE SIMBOLOS\n";
-	std::cout << "-------------------------------------------------\n";
-	std::cout << " | Tipo   |" << " Id        |" << " Nombre  |" << " Padre |" << " Valor |\n";
-	std::cout << "-------------------------------------------------\n";
+	std::cout << " ------------------------------------------------------------------\n";
+	std::cout << " | " << std::setw(10) << "TIPO" << " | ";
+	std::cout << std::setw(10) << "ID" << " | ";
+	std::cout << std::setw(10) << "NOMBRE" << " | ";
+	std::cout << std::setw(10) << "PADRE" << " | ";
+	std::cout << std::setw(10) << "VALOR" << " |\n";
+	std::cout << " ------------------------------------------------------------------\n";
 	std::cout << tabla.toString();
-	std::cout << "-------------------------------------------------\n";
+	std::cout << " ------------------------------------------------------------------\n";
 
 	//tabla2.recuperarDesdeArchivo("funcion2.txt");
 	//std::cout << tabla2.imprimirCodigo();
 	//<<
 	//"-------------------------------------\n";
 	//std::cout << "\nFuncion 2:\n";
-	//	"-------------------------------------\n";
+	//    "-------------------------------------\n";
 	//std::cout << tabla2.imprimirCodigo() <<
-	//	"-------------------------------------\n";
+	//    "-------------------------------------\n";
 
 	system("pause");
 	return 0;

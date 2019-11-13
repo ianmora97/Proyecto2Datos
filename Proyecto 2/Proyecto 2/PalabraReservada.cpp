@@ -47,42 +47,24 @@ std::string PalabraReservada::getValor(){
 	return this->valor;
 }
 
-std::string PalabraReservada::toString(){
+std::string PalabraReservada::toString() {
 	std::stringstream s;
 
-	if(tipo.size() == 2)
-		s << " | " << tipo << "     | ";
-	else if(tipo.size() == 3)
-		s << " | " << tipo << "    | ";
-	else if (tipo.size() == 4)
-		s << " | " << tipo << "   | ";
-	else if (tipo.size() == 5)
-		s << " | " << tipo << "  | ";
-	else if (tipo.size() == 6)
-		s << " | " << tipo << " | ";
-
-	if(ID.size() == 9)
-		s << ID << " | ";
-	else if(ID.size() == 8)
-		s << ID << "  | ";
-	else if (ID.size() == 7)
-		s << ID << "   | ";
-
-	s << nombre << " | ";
+	s << " | " << std::setw(10) << tipo << " | ";
+	s << std::setw(10) << ID << " | ";
+	s << std::setw(10) << nombre << " | ";
 
 	if (padre != "") {
-		if (padre.size() == 4)
-			s << padre << "    | ";
-		else
-			s << padre << " | ";
-	} else {
-		s << "NULL" << "  | ";
+		s << std::setw(10) << padre << " | ";
+	}
+	else {
+		s << std::setw(10) << "NULL" << " | ";
 	}
 
-	if(valor != "")
-		s << valor << " |";
+	if (valor != "")
+		s << std::setw(10) << valor << " |";
 	else
-		s << "Vacio" << " |";
+		s << std::setw(10) << "Vacio" << " |";
 
 
 	return s.str();

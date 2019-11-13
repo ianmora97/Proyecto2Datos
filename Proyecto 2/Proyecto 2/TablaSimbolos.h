@@ -22,7 +22,7 @@ public:
 
 	int hashf(std::string id);
 
-	std::string find(std::string id);
+	std::string buscar(std::string id);
 
 	void recuperarDesdeArchivo(std::string ruta);
 	std::string toString();
