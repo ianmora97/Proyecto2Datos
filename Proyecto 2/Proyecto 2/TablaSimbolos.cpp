@@ -40,6 +40,37 @@ void TablaSimbolos::initVectores() {
 	func.push_back("string");
 	func.push_back("bool");
 }
+//-------------Metodos----------------
+int TablaSimbolos::hashf(std::string id){
+	int numeroASCII = 0;
+
+	for (int i = 0; i < id.length(); i++) {
+		numeroASCII = numeroASCII + id[i];
+	}
+	return (numeroASCII % LINEAS_MAX);
+}
+
+std::string TablaSimbolos::buscar(std::string id){
+	int index = hashf(id);
+	/*
+	for (auto registro : hashtable) {
+		std::cout << registro.first << "\t" << registro.second.getNombre()
+			<< "\t" << registro.second.getEdad() << "\n" ;
+	}
+	*/
+
+	return "-1"; 
+}
+void TablaSimbolos::insertarFuncionMap(PalabraReservada pr) {
+	auto palabra = std::make_pair(pr.getNombre(), pr);
+	funcionesMap.insert(palabra);
+
+}
+void TablaSimbolos::insertarVariableMap(PalabraReservada pr) {
+	auto palabra = std::make_pair(pr.getNombre(), pr);
+	variablesMap.insert(palabra);
+}
+//-------------Metodos----------------!
 void TablaSimbolos::recuperarDesdeArchivo(std::string ruta){
 	std::string lineaCodigo;
 
@@ -114,25 +145,12 @@ std::string TablaSimbolos::imprimirCodigo() {
 
 	return s.str();
 }
+bool TablaSimbolos::declaracionInvalida(PalabraReservada p) {
 
-void TablaSimbolos::llenarStatments(std::string ruta){
-
-	std::string lineaCodigo;
-
-	std::ifstream entrada;
-	entrada.open(ruta);
-
-	while (!entrada.fail()) {
-		getline(entrada, lineaCodigo, ' ');
-	}
-
-	entrada.close();
-
+	return true;
 }
 
-void TablaSimbolos::funcionHash(std::string, int){
 
-}
 void TablaSimbolos::leerString(std::string linea) {
 	std::stack<std::string> pila;
 	std::vector<std::string> staments;
@@ -140,10 +158,10 @@ void TablaSimbolos::leerString(std::string linea) {
 	for (int i = 0; i < linea.size(); i++) {
 		
 		try{		
-			if (linea[i] != ' ' && linea[i] != '(' && linea[i] != '=' && linea[i] != ';') {
+			if (linea[i] != ' ' && linea[i] != '(' && linea[i] != '=' && linea[i] != ';') { //creo el statement
 				statement += linea[i];
 			}
-			else if (linea[i] == '(' && statement != "if") {
+			else if (linea[i] == '(' && statement != "if") { //capturo los parametros de la funcion
 				statement = "";
 				pila.push("(");
 				i++;
@@ -160,7 +178,7 @@ void TablaSimbolos::leerString(std::string linea) {
 				}
 				statement = "";
 			}
-			else if (linea[i] == '=' && staments.size() == 2) {
+			else if (linea[i] == '=' && staments.size() == 2) { //variables
 				PalabraReservada pr;
 				if (funciones.empty()) {
 					pr.setID("variable");
@@ -199,6 +217,13 @@ void TablaSimbolos::leerString(std::string linea) {
 					pr.setValor(statement);
 				}
 				variables.push(pr);
+				insertarVariableMap(pr);
+			}
+			else if (linea[i] == '=' && staments.size() != 2) { //variables
+				std::string e = pila.top();
+
+				
+				throw - 1;
 			}
 			else if (statement == "void") {
 				PalabraReservada pr;
@@ -222,6 +247,8 @@ void TablaSimbolos::leerString(std::string linea) {
 				pr.setTipo("void");
 				funciones.push(pr);
 				statement = "";
+
+				insertarFuncionMap(pr);
 			}
 			else if (statement == "if") {		
 				PalabraReservada pr;
@@ -245,6 +272,7 @@ void TablaSimbolos::leerString(std::string linea) {
 				pr.setTipo("if");
 				funciones.push(pr);
 				statement = "";
+				insertarFuncionMap(pr);
 			}
 			else {
 				staments.push_back(statement);
@@ -282,6 +310,7 @@ void TablaSimbolos::paramentros(std::string s) {
 			variables.push(pr);
 			staments.pop_back();
 			lectura = "";
+			insertarVariableMap(pr);
 		}
 		else if (s[i] == ')') {
 			PalabraReservada pr;
@@ -292,6 +321,7 @@ void TablaSimbolos::paramentros(std::string s) {
 			variables.push(pr);
 			staments.pop_back();
 			lectura = "";
+			insertarVariableMap(pr);
 		}
 		else {
 			staments.push_back(lectura);

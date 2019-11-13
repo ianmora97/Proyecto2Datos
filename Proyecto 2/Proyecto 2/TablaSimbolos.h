@@ -8,6 +8,9 @@
 #include <algorithm>
 #include <cctype>
 
+//el numero maximo de linea de codigo por archivo
+#define LINEAS_MAX 15 
+
 #include "PalabraReservada.h"
 
 class TablaSimbolos{
@@ -17,14 +20,18 @@ public:
 
 	void initVectores();
 
+	int hashf(std::string id);
+
+	std::string find(std::string id);
+
 	void recuperarDesdeArchivo(std::string ruta);
 	std::string toString();
 	std::string imprimirCodigo();
 
-	void llenarStatments(std::string);
-
-	void funcionHash(std::string, int);
-
+	bool declaracionInvalida(PalabraReservada);
+	
+	void insertarFuncionMap(PalabraReservada);
+	void insertarVariableMap(PalabraReservada);
 	void leerString(std::string linea);
 
 	void paramentros(std::string s);
@@ -34,7 +41,8 @@ public:
 	bool compararFunc(std::string l);
 
 private:
-	std::unordered_map<std::string, std::string> hashtable;
+	std::unordered_map<std::string, PalabraReservada> funcionesMap;
+	std::unordered_map<std::string, PalabraReservada> variablesMap;
 	std::vector<std::string> codigo;
 	std::stack<PalabraReservada> funciones;
 	std::stack<PalabraReservada> variables;
