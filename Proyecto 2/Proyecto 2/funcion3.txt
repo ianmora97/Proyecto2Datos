@@ -1,9 +1,12 @@
+float y = 40;
 
-int x = 4;
-
-void funcion(float v, string n){
+float metodo(string v, string n){
+	int y = 32;
 	if(v > 0.0){
+		b = "aguacate";
 		n = "Mayor";
-		x = x + 5;
+		y = x + 5;
 	}
+	return v;
 }
+return n;

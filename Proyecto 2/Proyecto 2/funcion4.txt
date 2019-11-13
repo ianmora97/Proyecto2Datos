@@ -1,0 +1,9 @@
+float y = 3;
+float calculo(int x){
+	while(true){
+		if(x ! = 3){
+			x + y;
+		}
+	}
+	return y;
+}

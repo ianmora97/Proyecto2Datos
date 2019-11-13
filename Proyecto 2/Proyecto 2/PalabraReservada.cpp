@@ -1,3 +1,10 @@
+//PalabraReservada.cpp
+//Autores: Ian Mora Rodrígues Ced. 116890118
+//         Iván Chinchilla Cordoba Ced. 116730818
+//		   Nancy Maroto Araya Ced. 402130446
+//Descripcion: Implementacion de los metodos declarados en el 
+//             archivo de cabecera "PalabraReservada.h"
+
 #include "PalabraReservada.h"
 
 PalabraReservada::PalabraReservada(){
@@ -45,6 +52,18 @@ std::string PalabraReservada::getPadre(){
 
 std::string PalabraReservada::getValor(){
 	return this->valor;
+}
+
+std::string PalabraReservada::imprimirAtributos(){
+	std::stringstream s;
+
+	s << "Nombre: " << nombre << "\n";
+	s << "Tipo: " << tipo << "\n";
+	s << "ID: " << ID << "\n";
+	s << "Padre: " << padre << "\n";
+	s << "Valor: " << valor << "\n";
+
+	return s.str();
 }
 
 std::string PalabraReservada::toString() {

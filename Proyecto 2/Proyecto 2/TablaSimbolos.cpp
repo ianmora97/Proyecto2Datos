@@ -1,3 +1,10 @@
+//TablaSimbolos.cpp
+//Autores: Ian Mora Rodrígues Ced. 116890118
+//         Iván Chinchilla Cordoba Ced. 116730818
+//		   Nancy Maroto Araya Ced. 402130446
+//Descripcion: Implementacion de los metodos declarados en el 
+//             archivo de cabecera "TablaSimbolos.h"
+
 #include "TablaSimbolos.h"
 
 TablaSimbolos::TablaSimbolos(){
@@ -6,8 +13,13 @@ TablaSimbolos::TablaSimbolos(){
 
 TablaSimbolos::~TablaSimbolos(){
 }
+
+//-------------Metodos basicos para leer y crear la tabla de simbolos----------------!
+
+//Se llenan los vectores con los elementos propios del lenguaje
 void TablaSimbolos::initVectores() {
-	//operadores
+
+	//Operadores
 	operadores.push_back(' ');
 	operadores.push_back('(');
 	operadores.push_back(')');
@@ -29,7 +41,8 @@ void TablaSimbolos::initVectores() {
 	operadores.push_back('>');
 	operadores.push_back('\'');
 	operadores.push_back('"');
-	//palabras reservadas
+
+	//Palabras reservadas
 	func.push_back("void");
 	func.push_back("if");
 	func.push_back("while");
@@ -39,37 +52,19 @@ void TablaSimbolos::initVectores() {
 	func.push_back("char");
 	func.push_back("string");
 	func.push_back("bool");
+
 }
-//-------------Metodos----------------
-int TablaSimbolos::hashf(std::string id){
+
+//Funcion hash para crear keys
+int TablaSimbolos::hashf(std::string id) {
 	unsigned int valor = 0;
 	for (int i = 0; i < id.length(); i++)
 		valor = valor + id[i];
 	return (valor % LINEAS_MAX);
 }
-PalabraReservada& TablaSimbolos::buscarVar(std::string id){ //buscar en variables
-	return variablesMap[hashf(id)]; 
-}
-PalabraReservada TablaSimbolos::buscarFunc(std::string id) { //buscar en funciones
-	return funcionesMap[hashf(id)];
-}
-bool TablaSimbolos::check_key(std::string e){
-	if (variablesMap.find(hashf(e)) == variablesMap.end())
-		return false;
-	return true;
-}
-void TablaSimbolos::insertarFuncionMap(PalabraReservada pr) {
-	int hash = hashf(pr.getNombre());
-	auto palabra = std::make_pair(hash, pr);
-	funcionesMap.insert(palabra);
-}
-void TablaSimbolos::insertarVariableMap(PalabraReservada pr) {
-	int hash = hashf(pr.getNombre());
-	auto palabra = std::make_pair(hash, pr);
-	variablesMap.insert(palabra);
-}
-//-------------Metodos----------------!
-void TablaSimbolos::recuperarDesdeArchivo(std::string ruta){
+
+//Se recupera el codigo desde un archivo y se crea la tabla de simbolos
+void TablaSimbolos::recuperarDesdeArchivo(std::string ruta) {
 	std::string lineaCodigo;
 	std::string errors;
 	std::ifstream entrada;
@@ -87,7 +82,7 @@ void TablaSimbolos::recuperarDesdeArchivo(std::string ruta){
 			}
 		}
 		else {
-			ExceptionE e("ARCHIVO NO ENCONTRADO",0);
+			ExceptionE e("ARCHIVO NO ENCONTRADO", 0);
 			throw e;
 		}
 	}
@@ -105,82 +100,142 @@ void TablaSimbolos::recuperarDesdeArchivo(std::string ruta){
 
 }
 
-std::string TablaSimbolos::toString() {
-	std::stack<PalabraReservada> pila;
+//-------------Metodos propios de la tabla de simbolos----------------!
 
+//Busca y recupera en hash table de variables un elemento
+PalabraReservada& TablaSimbolos::buscarVar(std::string id){ //buscar en variables
+	return variablesMap[hashf(id)]; 
+}
+
+//Busca y recupera en hash table de funciones un elemento
+PalabraReservada TablaSimbolos::buscarFunc(std::string id) { //buscar en funciones
+	return funcionesMap[hashf(id)];
+}
+
+//Inserta un elemento en la hash table de funciones
+void TablaSimbolos::insertarFuncionMap(PalabraReservada pr) {
+	int hash = hashf(pr.getNombre());
+	auto palabra = std::make_pair(hash, pr);
+	funcionesMap.insert(palabra);
+}
+
+//Inserta un elemento en la hash table de variables
+void TablaSimbolos::insertarVariableMap(PalabraReservada pr) {
+	int hash = hashf(pr.getNombre());
+	auto palabra = std::make_pair(hash, pr);
+	variablesMap.insert(palabra);
+}
+
+//Modifica los atributos de un elemento en la hash table de funciones
+void TablaSimbolos::modificarAtributosFuncionMap(std::string nombre, std::string tipo, std::string ID, std::string padre, std::string valor){
+	try {
+		if (existeFunc(nombre)) {
+
+			PalabraReservada pr = funcionesMap[hashf(nombre)];
+
+			pr.setTipo(tipo);
+			pr.setID(ID);
+			pr.setPadre(padre);
+			pr.setValor(valor);
+
+			std::cout << "Se ha modificado el elemento exitosamente\n";
+			std::cout << pr.imprimirAtributos();
+		}
+		else {
+			throw - 1;
+		}
+	}
+	catch (int e) {
+		std::cout << "No se ha encontrado el elemento\n";
+	}
+}
+
+//Modifica los atributos de un elemento en la hash table de variables
+void TablaSimbolos::modificarAtributosVariableMap(std::string nombre, std::string tipo, std::string ID, std::string padre, std::string valor){
+	try {
+		if (existeVar(nombre)) {
+
+			PalabraReservada pr = variablesMap[hashf(nombre)];
+
+			pr.setTipo(tipo);
+			pr.setID(ID);
+			pr.setPadre(padre);
+			pr.setValor(valor);
+
+			std::cout << "Se ha modificado el elemento exitosamente\n";
+			std::cout << pr.imprimirAtributos();
+		}
+		else {
+			throw - 1;
+		}
+	}
+	catch (int e) {
+		std::cout << "No se ha encontrado el elemento\n";
+	}
+}
+
+//Elimina un elemento en la hash table de funciones
+void TablaSimbolos::borrarFuncionMap(std::string id){
+	try {
+		if (existeFunc(id)) {
+			funcionesMap.erase(hashf(id));
+			std::cout << "Se ha borrado el elemento exitosamente\n";
+		} else {
+			throw - 1;
+		}
+	} catch (int e) {
+		std::cout << "No se ha podido borrar el elemento\n";
+	}
+}
+
+//Elimina un elemento en la hash table de variables
+void TablaSimbolos::borrarVariableMap(std::string id){
+	try {
+		if (existeVar(id)) {
+			variablesMap.erase(hashf(id));
+			std::cout << "Se ha borrado el elemento exitosamente\n";
+		}
+		else {
+			throw - 1;
+		}
+	}
+	catch (int e) {
+		std::cout << "No se ha podido borrar el elemento\n";
+	}
+}
+
+//Obtiene los atributos de un elemento en la hash table de funciones
+std::string TablaSimbolos::obtenerAtributosFuncionMap(std::string id){
 	std::stringstream s;
 
-	int tam;
+	PalabraReservada pr = funcionesMap[hashf(id)];
 
-	//s << "Funciones: \n\n";
-
-	tam = funcionesImprimir.size();
-	for (int i = 0; i < tam; i++) {
-		pila.push(funcionesImprimir.top());
-		s << funcionesImprimir.top().toString();
-		s << "\t" << hashf(funcionesImprimir.top().getNombre());
-		funcionesImprimir.pop();
-		s << "\n";
-	}
-
-	tam = pila.size();
-	for (int i = 0; i < tam; i++) {
-		funcionesImprimir.push(pila.top());
-		pila.pop();
-	}
-
-	//s << "\nVariables: \n\n";
-
-	tam = variables.size();
-	for (int i = 0; i < tam; i++) {
-		pila.push(variables.top());
-		s << variables.top().toString();
-		s << "\t" << hashf(variables.top().getNombre());
-		variables.pop();
-		s << "\n";
-	}
-	tam = pila.size();
-	for (int i = 0; i < tam; i++) {
-		variables.push(pila.top());
-		pila.pop();
-	}
+	s << "Los atributos son los siguientes: \n";
+	s << pr.imprimirAtributos();
 
 	return s.str();
 }
 
-std::string TablaSimbolos::imprimirCodigo() {
+//Obtiene los atributos de un elemento en la hash table de variables
+std::string TablaSimbolos::obtenerAtributosVariableMap(std::string id){
 	std::stringstream s;
 
-	int i = 0;
-	while (i < codigo.size()) {
-		s << std::setw(2) << i + 1 <<" | ";
-		s <<codigo[i] << "\n";
-		i++;
-	}
-	s << "\n";
+	PalabraReservada pr = variablesMap[hashf(id)];
+
+	s << "Los atributos son los siguientes: \n";
+	s << pr.imprimirAtributos();
+
 	return s.str();
 }
 
-std::string TablaSimbolos::mostrarErrores() {
-	std::stringstream s;
-	for (int i = 0; i < cerr.size(); i++) {
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); 
-		std::cout << cerr[i] << "\n";
-	}
-	if (cerr.empty()) {
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); 
-		std::cout << "Compilado correctamente sin errores!\n";
+//-------------Metodos auxliares que ayudan a la construccion de la tabla de simbolos-------------!
 
-	}
-	return s.str();
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-}
-
+//Lee una parte de la linea del codigo y crea las Palabras Reservadas (metodos y funciones)
 void TablaSimbolos::leerString(std::string linea) {
 	std::stack<std::string> pila;
 	std::vector<std::string> staments;
 	std::string statement;
-	for (int i = 0; i < linea.size(); i++) {	
+	for (int i = 0; i < linea.size(); i++) {
 		if (linea[i] != ' ' && linea[i] != '(' && linea[i] != '=' && linea[i] != ';' && linea[i] != '}') { //creo el statement
 			statement += linea[i];
 		}
@@ -213,7 +268,7 @@ void TablaSimbolos::leerString(std::string linea) {
 				pr.setPadre("main");
 				statement = "";
 				pila.push("(");
-				i+=2;
+				i += 2;
 				while (!pila.empty()) {
 					statement += linea[i];
 					i++;
@@ -242,15 +297,15 @@ void TablaSimbolos::leerString(std::string linea) {
 				i--;
 				pr.setValor(statement);
 			}
-			if (check_key(pr.getNombre())) {
+			if (existeVar(pr.getNombre())) {
 				std::string se = "Error - Linea " + std::to_string(lineaCodigoActual) + ": La variable '" + pr.getNombre() + "' ya esta Declarada";
 				cerr.push_back(se);
 			}
-			else{
+			else {
 				variables.push(pr);
 				insertarVariableMap(pr);
 			}
-			
+
 		}
 		else if (linea[i] == '=' && staments.size() != 2) { //asignacion de una variable
 			std::string e = staments.front();
@@ -266,8 +321,8 @@ void TablaSimbolos::leerString(std::string linea) {
 					pila.pop();
 				}
 			}
-			if (!check_key(e)) {
-				ExceptionE ex(e,1);
+			if (!existeVar(e)) {
+				ExceptionE ex(e, 1);
 				std::string se = "Error - Linea " + std::to_string(lineaCodigoActual) + ": '" + e + "' no esta Declarado";
 				cerr.push_back(se);
 			}
@@ -327,7 +382,7 @@ void TablaSimbolos::leerString(std::string linea) {
 			statement = "";
 			insertarFuncionMap(pr);
 		}
-		else if (statement == "if") {		
+		else if (statement == "if") {
 			PalabraReservada pr;
 			pr.setID("statement");
 
@@ -365,22 +420,22 @@ void TablaSimbolos::leerString(std::string linea) {
 						pila.pop();
 					}
 				}
-				if (check_key(statement)) {
+				if (existeVar(statement)) {
 					PalabraReservada pr = variablesMap[hashf(statement)];
 					PalabraReservada padre = funcionesMap[hashf(pr.getPadre())];
-					if ((padre.getTipo() == "void") ) {
+					if ((padre.getTipo() == "void")) {
 						std::string se = "Error - Linea " + std::to_string(lineaCodigoActual) +
 							": void no retorna nada";
 						cerr.push_back(se);
 					}
 					else if ((padre.getTipo() != pr.getTipo()) && (pr.getTipo() != funciones.top().getTipo())) {
 						std::string se = "Error - Linea " + std::to_string(lineaCodigoActual) +
-							": el valor de retorno no coninicide con la declaracion de '" + padre.getNombre() + "'";
+							": el valor de retorno no coincide con la declaracion de '" + padre.getNombre() + "'";
 						cerr.push_back(se);
 					}
 					else if ((pr.getTipo() != funciones.top().getTipo())) {
 						std::string se = "Error - Linea " + std::to_string(lineaCodigoActual) +
-							": el valor de retorno no coninicide con la declaracion de '" + funciones.top().getNombre() + "'";
+							": el valor de retorno no coincide con la declaracion de '" + funciones.top().getNombre() + "'";
 						cerr.push_back(se);
 					}
 				}
@@ -390,7 +445,7 @@ void TablaSimbolos::leerString(std::string linea) {
 					": return sin funcion";
 				cerr.push_back(se);
 			}
-			
+
 		}
 		else if (statement == "int") {
 			bool flag = true;
@@ -412,7 +467,7 @@ void TablaSimbolos::leerString(std::string linea) {
 				}
 				j++;
 			}
-			
+
 			if (flag) {
 				PalabraReservada pr;
 				pr.setID("funcion");
@@ -503,15 +558,15 @@ void TablaSimbolos::leerString(std::string linea) {
 				statement = "";
 			}
 		}
-		
+
 		else {
 			staments.push_back(statement);
 			statement = "";
 		}
-			
-		
 	}
 }
+
+//Ayudan a identificar y crear las variables propias de los parametros de una funcion
 void TablaSimbolos::paramentros(std::string s) {
 	std::vector<std::string> staments;
 	std::string lectura;
@@ -519,7 +574,7 @@ void TablaSimbolos::paramentros(std::string s) {
 		if (s[i] != ' ' && s[i] != ',' && s[i] != ')') {
 			lectura += s[i];
 		}
-		else if (s[i] == ' ' && s[i-1] == ',') {
+		else if (s[i] == ' ' && s[i - 1] == ',') {
 			//hola
 		}
 		else if (s[i] == ',') {
@@ -551,6 +606,8 @@ void TablaSimbolos::paramentros(std::string s) {
 		}
 	}
 }
+
+//Compara operadores
 bool TablaSimbolos::comparar(char l) {
 	for (int i = 0; i < operadores.size(); i++) {
 		if (operadores[i] == l) {
@@ -560,6 +617,7 @@ bool TablaSimbolos::comparar(char l) {
 	return false;
 }
 
+//Compara palabras reservadas (while, if, float, string, int, void, etc...)
 bool TablaSimbolos::compararFunc(std::string l) {
 	for (int i = 0; i < func.size(); i++) {
 		if (func[i] == l) {
@@ -569,3 +627,92 @@ bool TablaSimbolos::compararFunc(std::string l) {
 	return false;
 }
 
+//Revisa si algun elemento ya existe en la hash table de variables
+bool TablaSimbolos::existeVar(std::string e) {
+	if (variablesMap.find(hashf(e)) == variablesMap.end())
+		return false;
+	return true;
+}
+
+//Revisa si algun elemento ya existe en la hash table de funciones
+bool TablaSimbolos::existeFunc(std::string e) {
+	if (funcionesMap.find(hashf(e)) == funcionesMap.end())
+		return false;
+	return true;
+}
+
+//-------------Metodos de impresion----------------!
+
+//Imprime la tabla de simbolos
+std::string TablaSimbolos::toString() {
+	std::stack<PalabraReservada> pila;
+
+	std::stringstream s;
+
+	int tam;
+
+	//s << "Funciones: \n\n";
+
+	tam = funcionesImprimir.size();
+	for (int i = 0; i < tam; i++) {
+		pila.push(funcionesImprimir.top());
+		s << funcionesImprimir.top().toString();
+		s << "\t" << hashf(funcionesImprimir.top().getNombre());
+		funcionesImprimir.pop();
+		s << "\n";
+	}
+
+	tam = pila.size();
+	for (int i = 0; i < tam; i++) {
+		funcionesImprimir.push(pila.top());
+		pila.pop();
+	}
+
+	//s << "\nVariables: \n\n";
+
+	tam = variables.size();
+	for (int i = 0; i < tam; i++) {
+		pila.push(variables.top());
+		s << variables.top().toString();
+		s << "\t" << hashf(variables.top().getNombre());
+		variables.pop();
+		s << "\n";
+	}
+	tam = pila.size();
+	for (int i = 0; i < tam; i++) {
+		variables.push(pila.top());
+		pila.pop();
+	}
+
+	return s.str();
+}
+
+//Imprime el codigo trabajado
+std::string TablaSimbolos::imprimirCodigo() {
+	std::stringstream s;
+
+	int i = 0;
+	while (i < codigo.size()) {
+		s << std::setw(2) << i + 1 <<" | ";
+		s <<codigo[i] << "\n";
+		i++;
+	}
+	s << "\n";
+	return s.str();
+}
+
+//Imprime los errores encontrados
+void TablaSimbolos::mostrarErrores() {
+
+	if (!cerr.empty()) {
+		for (int i = 0; i < cerr.size(); i++) {
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+			std::cout << cerr[i] << "\n";
+		}
+	} else{
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); 
+		std::cout << "Compilado correctamente sin errores!\n";
+	}
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+}
