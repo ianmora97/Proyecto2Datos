@@ -7,26 +7,26 @@
 
 #include "PalabraReservada.h"
 
-PalabraReservada::PalabraReservada(){
+PalabraReservada::PalabraReservada() {
 	valor = "";
 }
 
-PalabraReservada::~PalabraReservada(){
+PalabraReservada::~PalabraReservada() {
 }
 
-void PalabraReservada::setTipo(std::string tipo){
+void PalabraReservada::setTipo(std::string tipo) {
 	this->tipo = tipo;
 }
 
-void PalabraReservada::setNombre(std::string nombre){
+void PalabraReservada::setNombre(std::string nombre) {
 	this->nombre = nombre;
 }
 
-void PalabraReservada::setID(std::string ID){
+void PalabraReservada::setID(std::string ID) {
 	this->ID = ID;
 }
 
-void PalabraReservada::setPadre(std::string padre){
+void PalabraReservada::setPadre(std::string padre) {
 	this->padre = padre;
 }
 
@@ -34,27 +34,27 @@ void PalabraReservada::setValor(std::string s) {
 	this->valor = s;
 }
 
-std::string PalabraReservada::getTipo(){
+std::string PalabraReservada::getTipo() {
 	return tipo;
 }
 
-std::string PalabraReservada::getNombre(){
+std::string PalabraReservada::getNombre() {
 	return nombre;
 }
 
-std::string PalabraReservada::getID(){
+std::string PalabraReservada::getID() {
 	return ID;
 }
 
-std::string PalabraReservada::getPadre(){
+std::string PalabraReservada::getPadre() {
 	return padre;
 }
 
-std::string PalabraReservada::getValor(){
+std::string PalabraReservada::getValor() {
 	return this->valor;
 }
 
-std::string PalabraReservada::imprimirAtributos(){
+std::string PalabraReservada::imprimirAtributos() {
 	std::stringstream s;
 
 	s << "Nombre: " << nombre << "\n";

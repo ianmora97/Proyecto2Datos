@@ -7,11 +7,11 @@
 
 #include "TablaSimbolos.h"
 
-TablaSimbolos::TablaSimbolos(){
+TablaSimbolos::TablaSimbolos() {
 	initVectores();
 }
 
-TablaSimbolos::~TablaSimbolos(){
+TablaSimbolos::~TablaSimbolos() {
 }
 
 //-------------Metodos basicos para leer y crear la tabla de simbolos----------------!
@@ -103,8 +103,8 @@ void TablaSimbolos::recuperarDesdeArchivo(std::string ruta) {
 //-------------Metodos propios de la tabla de simbolos----------------!
 
 //Busca y recupera en hash table de variables un elemento
-PalabraReservada& TablaSimbolos::buscarVar(std::string id){ //buscar en variables
-	return variablesMap[hashf(id)]; 
+PalabraReservada& TablaSimbolos::buscarVar(std::string id) { //buscar en variables
+	return variablesMap[hashf(id)];
 }
 
 //Busca y recupera en hash table de funciones un elemento
@@ -127,7 +127,7 @@ void TablaSimbolos::insertarVariableMap(PalabraReservada pr) {
 }
 
 //Modifica los atributos de un elemento en la hash table de funciones
-void TablaSimbolos::modificarAtributosFuncionMap(std::string nombre, std::string tipo, std::string ID, std::string padre, std::string valor){
+void TablaSimbolos::modificarAtributosFuncionMap(std::string nombre, std::string tipo, std::string ID, std::string padre, std::string valor) {
 	try {
 		if (existeFunc(nombre)) {
 
@@ -151,7 +151,7 @@ void TablaSimbolos::modificarAtributosFuncionMap(std::string nombre, std::string
 }
 
 //Modifica los atributos de un elemento en la hash table de variables
-void TablaSimbolos::modificarAtributosVariableMap(std::string nombre, std::string tipo, std::string ID, std::string padre, std::string valor){
+void TablaSimbolos::modificarAtributosVariableMap(std::string nombre, std::string tipo, std::string ID, std::string padre, std::string valor) {
 	try {
 		if (existeVar(nombre)) {
 
@@ -175,21 +175,23 @@ void TablaSimbolos::modificarAtributosVariableMap(std::string nombre, std::strin
 }
 
 //Elimina un elemento en la hash table de funciones
-void TablaSimbolos::borrarFuncionMap(std::string id){
+void TablaSimbolos::borrarFuncionMap(std::string id) {
 	try {
 		if (existeFunc(id)) {
 			funcionesMap.erase(hashf(id));
 			std::cout << "Se ha borrado el elemento exitosamente\n";
-		} else {
+		}
+		else {
 			throw - 1;
 		}
-	} catch (int e) {
+	}
+	catch (int e) {
 		std::cout << "No se ha podido borrar el elemento\n";
 	}
 }
 
 //Elimina un elemento en la hash table de variables
-void TablaSimbolos::borrarVariableMap(std::string id){
+void TablaSimbolos::borrarVariableMap(std::string id) {
 	try {
 		if (existeVar(id)) {
 			variablesMap.erase(hashf(id));
@@ -205,7 +207,7 @@ void TablaSimbolos::borrarVariableMap(std::string id){
 }
 
 //Obtiene los atributos de un elemento en la hash table de funciones
-std::string TablaSimbolos::obtenerAtributosFuncionMap(std::string id){
+std::string TablaSimbolos::obtenerAtributosFuncionMap(std::string id) {
 	std::stringstream s;
 
 	PalabraReservada pr = funcionesMap[hashf(id)];
@@ -217,7 +219,7 @@ std::string TablaSimbolos::obtenerAtributosFuncionMap(std::string id){
 }
 
 //Obtiene los atributos de un elemento en la hash table de variables
-std::string TablaSimbolos::obtenerAtributosVariableMap(std::string id){
+std::string TablaSimbolos::obtenerAtributosVariableMap(std::string id) {
 	std::stringstream s;
 
 	PalabraReservada pr = variablesMap[hashf(id)];
@@ -693,8 +695,8 @@ std::string TablaSimbolos::imprimirCodigo() {
 
 	int i = 0;
 	while (i < codigo.size()) {
-		s << std::setw(2) << i + 1 <<" | ";
-		s <<codigo[i] << "\n";
+		s << std::setw(2) << i + 1 << " | ";
+		s << codigo[i] << "\n";
 		i++;
 	}
 	s << "\n";
@@ -709,8 +711,9 @@ void TablaSimbolos::mostrarErrores() {
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
 			std::cout << cerr[i] << "\n";
 		}
-	} else{
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); 
+	}
+	else {
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
 		std::cout << "Compilado correctamente sin errores!\n";
 	}
 

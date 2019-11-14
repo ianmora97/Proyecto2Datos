@@ -1,0 +1,3 @@
+void mostrar(string palabra){
+	return palabra;
+}

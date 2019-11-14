@@ -16,12 +16,12 @@
 //Excepciones para identificar errores
 struct ExceptionE {
 	ExceptionE(std::string s, int v)
-		:s(s), v(v){}
+		:s(s), v(v) {}
 	std::string s;
 	int v;
 };
 
-class TablaSimbolos{
+class TablaSimbolos {
 public:
 	TablaSimbolos();
 	~TablaSimbolos();

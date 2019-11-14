@@ -10,7 +10,7 @@
 
 #include "tools.h"
 
-class PalabraReservada{
+class PalabraReservada {
 public:
 	PalabraReservada();
 	~PalabraReservada();
